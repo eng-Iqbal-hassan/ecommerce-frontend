@@ -7,22 +7,25 @@ const user = {"_id" : "defg", "role": "Admin"}
 const Header = () => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const logoutHandler = () => {
+        setIsOpen(false)
+    }
 
   return (
-    <nav>
-        <Link to="/">Home</Link>
-        <Link to="/search"><FaSearch /></Link>
-        <Link to="/cart"><FaShoppingBag /></Link>
+    <nav className="header">
+        <Link onClick={()=>setIsOpen(false)} to="/">Home</Link>
+        <Link onClick={()=>setIsOpen(false)} to="/search"><FaSearch /></Link>
+        <Link onClick={()=>setIsOpen(false)} to="/cart"><FaShoppingBag /></Link>
         {
             user?._id
             ? <>
                 <button onClick={()=>setIsOpen(prev => !prev)}><FaUser /></button>
                 <dialog open={isOpen}>
                     <div>
-                        {user.role === "Admin" && <Link to="/admin/dashboard">Admin</Link>}
+                        {user.role === "Admin" && <Link onClick={()=>setIsOpen(false)} to="/admin/dashboard">Admin</Link>}
                     </div>
-                    <Link to="/orders">orders</Link>
-                    <button><FaSignOutAlt /></button>
+                    <Link onClick={()=>setIsOpen(false)} to="/orders">orders</Link>
+                    <button onClick={logoutHandler}><FaSignOutAlt /></button>
                 </dialog>
               </>
             : <Link to="/cart"><FaSignInAlt /></Link>
