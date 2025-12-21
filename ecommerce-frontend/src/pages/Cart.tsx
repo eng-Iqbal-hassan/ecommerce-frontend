@@ -5,7 +5,7 @@ import CartItems from "../components/CartItem";
 const cartItems = [
   {
     productId: "jgfgugigufc",
-    photo: "",
+    photo: "https://m.media-amazon.com/images/I/51ellgSYmxL._AC_SX425_.jpg",
     name: "Macbook",
     price: 3000,
     quantity: 4,
