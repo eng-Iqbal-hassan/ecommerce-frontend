@@ -80,19 +80,11 @@ $color3: rgb(0, 104, 136);
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.heading {
+  @include heading;
+  text-align: center;
+  margin: 1rem 0;
+}
 
 .admin-container {
   @include grid(1fr 4fr, 2rem);
