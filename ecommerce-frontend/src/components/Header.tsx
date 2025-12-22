@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import {FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser} from "react-icons/fa"
 import { useState } from "react"
 
-const user = {"_id" : "defg", "role": "Admin"}
+const user = {"_id" : "", "role": "Admin"}
 
 const Header = () => {
 
@@ -28,7 +28,7 @@ const Header = () => {
                     <button onClick={logoutHandler}><FaSignOutAlt /></button>
                 </dialog>
               </>
-            : <Link to="/cart"><FaSignInAlt /></Link>
+            : <Link to="/login"><FaSignInAlt /></Link>
         }
     </nav>
   )
