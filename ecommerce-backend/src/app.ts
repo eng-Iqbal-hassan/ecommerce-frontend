@@ -5,6 +5,7 @@ import express from "express";
 
 import userRotute from "./routes/user.js";
 import connectDB from "./utils/feature.js";
+import { errorMiddleware } from "./middlewares/error.js";
 
 
 
@@ -15,8 +16,11 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+app.use("/api/v1/user", userRotute);
+
+// I have added this middleware at the end so whenever all the middlewraes are executed, then this middleware will be used.
+app.use(errorMiddleware);
+
 app.listen(port, ()=> {
     console.log(`Server is working on http://localhost:${port}`)
 })
-
-app.use("/api/v1/user", userRotute);
