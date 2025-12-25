@@ -27,7 +27,6 @@ export const newProduct = TryCatch(async (req, res, next) => {
     });
 });
 export const getLatestProduct = TryCatch(async (req, res, next) => {
-    // Get latest 5 products
     const products = await Product.find({}).sort({ createdAt: -1 }).limit(5);
     return res.status(200).json({
         success: true,
@@ -50,6 +49,10 @@ export const getAdminProduct = TryCatch(async (req, res, next) => {
 });
 export const getSingleProduct = TryCatch(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
+    if (!product) {
+        return next(new ErrorHandler("Product not Found", 404));
+    }
+    ;
     return res.status(200).json({
         success: true,
         product
@@ -61,7 +64,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     const photo = req.file;
     const product = await Product.findById(id);
     if (!product) {
-        return next(new ErrorHandler("Invalid Product Id", 400));
+        return next(new ErrorHandler("Product not Found", 404));
     }
     ;
     if (photo) {
@@ -80,5 +83,55 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     return res.status(200).json({
         success: true,
         message: "Product is updated successfully"
+    });
+});
+export const deleteProduct = TryCatch(async (req, res, next) => {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+        return next(new ErrorHandler("Product not Found", 404));
+    }
+    ;
+    rm(product.photo, () => { console.log("old photo is deleted"); });
+    product.deleteOne();
+    return res.status(200).json({
+        success: true,
+        message: "Product is deleted successfully"
+    });
+});
+export const getAllProducts = TryCatch(async (req, res, next) => {
+    const { search, sort, price, category } = req.query;
+    const page = Number(req.query.page) || 1;
+    // 1,2,3,4,5,6,7,8
+    //9,10,11,12,13,14,15,16
+    //17,18,19,20,21,22,23,24
+    const limit = Number(process.env.PRODUCT_PER_PAGE || 8);
+    const skip = limit * (page - 1);
+    const baseQuery = {};
+    if (search) {
+        baseQuery.name = {
+            $regex: search,
+            options: "i"
+        };
+    }
+    if (price)
+        baseQuery.price = { $lte: Number(price) };
+    if (category)
+        baseQuery.category = category;
+    // const [products,filteredOnlyProducts] = await Promise.all(
+    //     Product.find(baseQuery)
+    //     .sort(sort ? {price: sort==="asc" ? 1 : -1} : undefined)
+    //     .limit(limit)
+    //     .skip(skip),
+    //     Product.find(baseQuery))
+    const products = await Product.find(baseQuery)
+        .sort(sort ? { price: sort === "asc" ? 1 : -1 } : undefined)
+        .limit(limit)
+        .skip(skip);
+    const filteredOnlyProducts = await Product.find(baseQuery);
+    const totalPage = Math.ceil(filteredOnlyProducts.length / limit);
+    return res.status(200).json({
+        success: true,
+        products,
+        totalPage
     });
 });
