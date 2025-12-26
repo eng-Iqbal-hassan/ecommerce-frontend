@@ -23,9 +23,7 @@ export const newOrder = TryCatch(async(req: Request<{},{},NewOrderRequestBody>,r
         !user ||
         !subTotal ||
         !tax ||
-        !shippingCharges ||
-        !discount ||
-        !total
+        !total 
     ) return next(new ErrorHandler("Please enter all fields",400))
 
     await Order.create({

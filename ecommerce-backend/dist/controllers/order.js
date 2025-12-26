@@ -9,8 +9,6 @@ export const newOrder = TryCatch(async (req, res, next) => {
         !user ||
         !subTotal ||
         !tax ||
-        !shippingCharges ||
-        !discount ||
         !total)
         return next(new ErrorHandler("Please enter all fields", 400));
     await Order.create({
