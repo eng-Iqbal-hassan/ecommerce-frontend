@@ -7,12 +7,19 @@ import userRotute from "./routes/user.js";
 import productRoute from "./routes/product.js";
 import connectDB from "./utils/feature.js";
 import { errorMiddleware } from "./middlewares/error.js";
+import NodeCache from "node-cache";
 
 
 
 const port = 3000;
 
 connectDB();
+
+export const myCache = new NodeCache(); 
+// The purpose of caching is that we will store the specific data in the memory and that data will be super fast
+// Here let say there is a controller function with the name of getLatestProduct,
+// Here, I have get the products from the database and after that what if i will store them in the cache.
+
 
 const app = express();
 app.use(express.json());
