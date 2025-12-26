@@ -3,13 +3,13 @@ import { InvalidateCacheProps } from "../types/types.js";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 
-const connectDB = async () => {
+const connectDB = async (uri:string) => {
   try {
     mongoose.connection.on("connected", () =>
       console.log("Database is connected")
     );
 
-    await mongoose.connect("mongodb+srv://engiqbal110:iqbal123@cluster0.uhkwsdl.mongodb.net", {
+    await mongoose.connect(uri, {
       dbName: "ecommerce-store",
     });
   } catch (err) {

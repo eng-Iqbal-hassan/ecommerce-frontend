@@ -1,19 +1,25 @@
 
 import express from "express";
-
-// importing routes
-
-import userRotute from "./routes/user.js";
-import productRoute from "./routes/product.js";
 import connectDB from "./utils/feature.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
+import {config} from "dotenv";
+import morgan from "morgan";
+
+// importing routes
+import userRotute from "./routes/user.js";
+import productRoute from "./routes/product.js";
+import orderRoute from "./routes/order.js";
+
+config({
+    path: "./.env"
+})
 
 
+const port = process.env.PORT || 3000;
+const mongoUri = process.env.MONGO_URI || "";
 
-const port = 3000;
-
-connectDB();
+connectDB(mongoUri);
 
 export const myCache = new NodeCache(); 
 // The purpose of caching is that we will store the specific data in the memory and that data will be super fast
@@ -23,9 +29,11 @@ export const myCache = new NodeCache();
 
 const app = express();
 app.use(express.json());
+app.use(morgan("dev"))
 
 app.use("/api/v1/user", userRotute);
 app.use("/api/v1/product", productRoute);
+app.use("/api/v1/order", orderRoute);
 app.use("/uploads",express.static("uploads"))
 // Due to it by hitting on the url http://localhost:3000/uploads/doc15.png, we get the image which is uploaded in one of the product.
 
