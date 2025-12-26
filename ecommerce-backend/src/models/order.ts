@@ -40,11 +40,11 @@ const schema = new mongoose.Schema(
         },
         shippingCharges: {
             type: Number,
-            required: true
+            default: 0,
         },
         discount: {
             type: Number,
-            required: true
+            default: 0,
         },
         total: {
             type: Number,
@@ -55,7 +55,7 @@ const schema = new mongoose.Schema(
             enum: ["Processing", "Shipped", "Delivered"],
             default: "Processing"
         },
-        orderItem: [
+        orderItems: [
             {
                 name: String,
                 photo: String,

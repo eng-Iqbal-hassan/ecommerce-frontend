@@ -133,13 +133,14 @@ export const deleteProduct = TryCatch(async (req, res, next) => {
     }
     ;
     rm(product.photo, () => { console.log("old photo is deleted"); });
-    await Product.deleteOne({ _id: product._id });
+    await product.deleteOne();
     await invalidateCache({ product: true });
     return res.status(200).json({
         success: true,
         message: "Product is deleted successfully"
     });
 });
+// get All productswith search
 export const getAllProducts = TryCatch(async (req, res, next) => {
     const { search, sort, price, category } = req.query;
     const page = Number(req.query.page) || 1;
