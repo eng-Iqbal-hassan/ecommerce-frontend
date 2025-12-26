@@ -4,6 +4,7 @@ import { NewProductRequestBody, searchRequestQuery, baseQuery } from "../types/t
 import { Product } from "../models/product.js";
 import ErrorHandler from "../utils/utilityClass.js";
 import { rm } from "fs";
+// import { faker } from "@faker-js/faker";
 
 export const newProduct = TryCatch(async(req: Request<{},{},NewProductRequestBody>,res,next) => {
     const { name, price, stock, category } = req.body;
@@ -130,4 +131,40 @@ export const getAllProducts = TryCatch(async(req: Request<{},{},{},searchRequest
         products,
         totalPage
     })
-})
+});
+
+// This function is created to create random products that we will display in frontend
+// const generateRandomProducts = async(count: number = 10) => {
+//    const products = [];
+//    for (let i=0; i< count ; i++) {
+//     const product = {
+//         name: faker.commerce.productName(),
+//         photo: "uploads/e25100d1-c447-4e09-916a-ed4a7c408d88.png",
+//         price: Number(faker.commerce.price({ min: 1500, max: 80000, dec: 0 })),
+//         stock: Number(faker.commerce.price({ min: 0, max: 100, dec: 0 })),
+//         category: faker.commerce.department(),
+//         createdAt: new Date(faker.date.past()),
+//         updatedAt:  new Date(faker.date.recent()),
+//         _v: 0,
+//     }
+//     products.push(product);
+//    } 
+//    await Product.create(products);
+//    console.log({success: true});
+// }
+// generateRandomProducts(40);
+
+//By running generateRandomProducts function, I have get products in database(mongoDb), which is being seen.
+
+// const deleteRandomProducts = async(count: number = 10) => {
+//     const products = await Product.find({}).skip(2);
+//     for (let i=0; i< products.length; i++) {
+//         const product = products[i];
+//         await Product.deleteOne({_id: product.id});
+//     }
+//     console.log({success: true})
+// }
+// When we will run this deleteRandomProducts function, it will skip first two products and delete the rest of products. 
+
+// deleteRandomProducts(38);
+
